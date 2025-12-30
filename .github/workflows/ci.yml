@@ -21,7 +21,10 @@ jobs:
         with:
           cache: "pnpm"
           node-version-file: ".nvmrc"
-      - uses: metadaoproject/setup-solana@v1.0
+      - name: Install Solana CLI
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
       - run: pnpm install
       - run: ./scripts/run-localnet-and-seed.sh --ci
       - run: pnpm exec playwright test --project=${{ matrix.browser }}
